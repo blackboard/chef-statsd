@@ -6,22 +6,12 @@ git node["statsd"]["dir"] do
   repository node["statsd"]["repository"]
   reference node["statsd"]["reference"]
   action :sync
-  notifies :restart, "service[statsd]", :delayed
 end
 
 directory node["statsd"]["conf_dir"] do
   action :create
 end
 
-graphite_host = node['statsd']['graphite_host']
-
-unless Chef::Config[:solo]
-  graphite_results = search(:node, node['statsd']['graphite_query'])
-
-  unless graphite_results.empty?
-    graphite_host = graphite_results[0]['ipaddress']
-  end
-end
 
 template "#{node["statsd"]["conf_dir"]}/#{node["statsd"]["config_file"]}" do
   mode "0644"
@@ -32,7 +22,7 @@ template "#{node["statsd"]["conf_dir"]}/#{node["statsd"]["config_file"]}" do
     :flush_interval     => node["statsd"]["flush_interval"],
     :percent_threshold  => node["statsd"]["percent_threshold"],
     :graphite_port      => node["statsd"]["graphite_port"],
-    :graphite_host      => graphite_host,
+    :graphite_host      => node["statsd"]["graphite_host"],
     :delete_idle_stats  => node["statsd"]["delete_idle_stats"],
     :delete_gauges      => node["statsd"]["delete_gauges"],
     :delete_timers      => node["statsd"]["delete_timers"],
