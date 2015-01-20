@@ -37,7 +37,6 @@ template "#{node["statsd"]["conf_dir"]}/#{node["statsd"]["config_file"]}" do
     :prefix_set         => node["statsd"]["graphite"]["prefix_set"],
     :dump_messages      => node["statsd"]["dump_messages"]
   )
-  notifies :restart, "service[statsd]", :delayed
 end
 
 user node["statsd"]["username"] do
@@ -46,7 +45,7 @@ user node["statsd"]["username"] do
 end
 
 runit_service "statsd" do
-  action [:enable, :start]
+  action [:enable]
   default_logger true
   options ({
     :user => node['statsd']['username'],
