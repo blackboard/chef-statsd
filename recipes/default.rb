@@ -23,7 +23,7 @@ unless Chef::Config[:solo]
   end
 end
 
-template "#{node["statsd"]["conf_dir"]}/config.js" do
+template "#{node["statsd"]["conf_dir"]}/#{node["statsd"]["config_file"]}" do
   mode "0644"
   source "config.js.erb"
   variables(
