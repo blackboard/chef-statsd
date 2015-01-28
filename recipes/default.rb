@@ -13,7 +13,7 @@ directory node["statsd"]["conf_dir"] do
 end
 
 
-template "#{node["statsd"]["conf_dir"]}/#{node["statsd"]["config_file"]}" do
+template "#{node["statsd"]["conf_dir"]}/#{node["statsd"]["config_template_file"]}" do
   mode "0644"
   source "config.js.erb"
   variables(
